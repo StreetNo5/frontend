@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import moment from 'moment';
 import music1 from '../assets/SimpleSound.mp3';
 import exampleImg from '../assets/example.png';
 import  { ReactComponent as Send } from '../assets/Send.svg';
@@ -22,15 +23,15 @@ function Header({comment} : any) {
 function Music({onStartPlay, onStopPlay, time, currentTime} : any) {
 
   return(
-    <div className = 'w-[390px] h-[227px]'>
-        <div className = 'w-[350px] h-[70px]'>
-          <p className='text-[20px]'>같이 감상하면 좋은 곡</p>
+    <div className = 'w-[390px] h-[227px] relative'>
+        <div className = 'w-[350px] h-[70px] absolute right-0'>
+          <p className='text-[20px] mt-[10px]'>같이 감상하면 좋은 곡</p>
         </div>
-        <div className = 'w-[350px] h-[157]px' style={{ backgroundColor: '#DFDFDF'}} >
+        <div className = 'w-[350px] h-[157]px absolute right-0 bottom-[32px]' style={{ backgroundColor: '#DFDFDF'}} >
           <p className='text-[20px]'>song_name</p>
           <p className='text-[20px]'>artist_name</p>
-          <p>{time}</p>
-          <p>{currentTime}</p>
+          <p>{moment(time * 1000).format("mm:ss")}</p>
+          <p>{moment(currentTime * 1000).format("mm:ss")}</p>
           <button onClick={onStartPlay} className=''>재생</button>
           <button onClick={onStopPlay} className=''>중단</button>
         </div>
@@ -41,17 +42,17 @@ function Music({onStartPlay, onStopPlay, time, currentTime} : any) {
 function Content({data, userName} : any) {
   return(
     <>
-      <hr style={{ width: '350px', border: '4px solid #0F0F0F', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}/>
-      <div className = 'w-[390px] h-[566px]'>
-        <div className = 'w-[330px] h-[21px]'>
+      <div className='w-[350px] h-[10px] bg-st-gray-10 mt-[32px] ml-[40px]'/>
+      <div className = 'w-[390px] h-[566px] relative'>
+        <div className = 'w-[330px] h-[21px] absolute right-[20px]'>
           <p style={{borderLeft: '1px soild black'}}>May 21</p> 
           <p>{data}</p>
         </div>
-        <div className = 'w-[330px] h-[60px]'>
+        <div className = 'w-[330px] h-[60px] absolute top-[30px] right-[20px]'>
           <Userimg></Userimg>
           <p>{userName}</p>
         </div>
-        <div className = 'w-[350px] h-[467px]'>
+        <div className = 'w-[350px] h-[467px] absolute top-[100px] right-[0px]'>
           <ContentImg></ContentImg>
         </div>
       </div>
@@ -61,16 +62,17 @@ function Content({data, userName} : any) {
 
 function ImageInfo({tagList, info, location} : any) {
   return(
-    <div className = 'w-[390px] h-[284px]'>
-      <div className = 'w-[390px] h-[138px]'>
+    <div className = 'w-[390px] h-[284px] relative mt-[32px] mb-[32px]'>
+      <div className = 'w-[330px] h-[138px] absolute left-[40px]'>
         <div className = 'w-[330px] h-[26px]'>태그자리{tagList}</div>
         <div className = 'w-[330px] h-[96px] overflow-auto'>설명자리{info}</div>
       </div>
-      <div className = 'w-[390px] h-[114px]'>
-        <div className = 'w-[330px] h-[70px]'><p>이 장소는 어디인가요?</p></div>
-        <div className = 'w-[330px] h-[44px]'>
-          <Mark></Mark>
-          <p className = 'w-[330px] h-[44px] text-[16px]'>{location}</p>
+      <div className = 'w-[390px] h-[114px] absolute top-[170px]'>
+        <div className = 'w-[330px] h-[70px] absolute left-[40px]'>
+          <p className="absolute top-[20px] text-[20px]">이 장소는 어디인가요?</p></div>
+        <div className = 'w-[330px] h-[44px] absolute top-[70px] left-[40px] border-2'>
+          <Mark className="absolute top-[14px] left-[14px]" ></Mark>
+          <span className = 'w-[281px] h-[24px] text-[16px] absolute left-[39px] top-[10px]'>수원시{location}</span>
         </div>
       </div>
     </div>
@@ -79,12 +81,12 @@ function ImageInfo({tagList, info, location} : any) {
 
 function CommentListItem({comment} : any) {
   return(
-    <div className = 'w-[390px] h-[216px]'>
+    <div className = 'w-[390px] h-[216px] relative'>
       <div className = 'w-[350px] h-[60px]'>
-        <CommentImg style={{ width: '60px', height:'60px'}}></CommentImg>
+        <CommentImg className = 'w-[60px] h-[60px]'></CommentImg>
         <div>
-          <p>{'teo'}</p>
-          <p>{'sprint'}</p>
+          <span>{'teo'}</span>
+          <span>{'sprint'}</span>
         </div>
         <div>
           <Dot></Dot>
@@ -92,9 +94,8 @@ function CommentListItem({comment} : any) {
         </div>
       </div>
       <div className = 'w-[350px] h-[84px]'>
-
+        텍스트내용
       </div>
-
     </div>
   );
 }
@@ -105,17 +106,26 @@ function CommentList({comment} : any) {
   );
 }
 
+function CommentInput({newComment,  setNewComment} : any) {
+  return(
+    <div className = 'w-[390px] h-[85px] relative'>
+      <form className = 'w-[350px] h-[48px] absolute left-[20px] top-[10px] bg-st-gray-02'> 
+        <input className = 'w-[330px] h-[48px] bg-st-gray-02 px-[16px] focus:outline-none' placeholder='댓글을 입력하세요' value={newComment} onChange={(event) => { setNewComment(event.target.value);}}/>    
+        <Send className = 'w-[24px] h-[24px] absolute right-[8px] top-[8px]' />
+      </form>
+    </div>
+  );
+}
+
 function Comment({commentNum, newComment, setNewComment} : any) {
   return(
     <div>
-        <div className = 'w-[390px] h-[70px] text-20px'>댓글{commentNum}</div>
-        <CommentList></CommentList>
-        <div className = 'w-[390px] h-[85px]'>
-          <form style={{ width: "350px", height: "48px", position: "relative", borderRadius: "12px"}}> 
-            <input style={{ width: "276px", height: "24px", paddingLeft: "40px" }} placeholder='댓글을 입력하세요' value={newComment} onChange={(event) => { setNewComment(event.target.value);}}/>    
-            <Send style={{ width:'24px', height:'24px', position: "absolute", right: "6px", top: "5px",}} />
-          </form>
+        <div className = 'w-[390px] h-[70px] mt-[32px] mb-[32px] relative'>
+          <p className="text-[20px] absolute left-[40px] top-[20px]">
+          댓글 {commentNum}</p>
         </div>
+        <CommentList></CommentList>
+        <CommentInput></CommentInput>
     </div>
   );
 }
@@ -158,9 +168,10 @@ function Detail() {
     <div style={{ width: '390px', height:'2079px', border: '1px solid black'}}>
       <Header></Header>
       <Music onStartPlay={onStartPlay} onStopPlay={onStopPlay} time={totalTime} currentTime={currentTime}></Music>
-      <div className='w-[390px] h-[14px] st-gray-02'></div>
+      <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Content></Content>
       <ImageInfo></ImageInfo>
+      <div className='w-[390px] h-[14px] bg-st-gray-02'></div>
       <Comment commentNum={commentNum}></Comment>
       
     </div>
